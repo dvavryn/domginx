@@ -7,15 +7,12 @@ Client::Client(int fd, const ServerConfig* s) :
 	_bytesSent(0),
 	_lastActivity(time(NULL))
 {
-
 }
 
 Client::~Client() {
-
 }
 
 void	Client::write() {
-	std::cout << "write" << std::endl;
 	ssize_t bsent;
 
 	if (_writeBuffer.size() == 0) {
@@ -41,7 +38,6 @@ void	Client::write() {
 }
 
 void	Client::_createResponse() {
-	std::cout << "createResponse" << std::endl;
 	_writeBuffer += "HTTP/1.1 200 OK\r\n";
 	_writeBuffer += "Content-Type: text/html; charset=UTF-8\r\n";
 	_writeBuffer += "Content-Length: 52\r\n";
