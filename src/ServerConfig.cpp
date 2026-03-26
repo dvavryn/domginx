@@ -5,7 +5,6 @@ ServerConfig::ServerConfig() :
 	_keepaliveTimeout(75),
 	_sendTimeout(60)
 {
-
 }
 
 ServerConfig::ServerConfig(const ServerConfig& o) :
@@ -21,7 +20,6 @@ ServerConfig::ServerConfig(const ServerConfig& o) :
 	_accessLog(o._accessLog),
 	_errorLog(o._errorLog)
 {
-
 }
 
 ServerConfig& ServerConfig::operator=(const ServerConfig& o) {
@@ -40,11 +38,7 @@ ServerConfig& ServerConfig::operator=(const ServerConfig& o) {
 }
 
 ServerConfig::~ServerConfig() {
-
 }
-
-
-// SETTERS
 
 void	ServerConfig::addListen(const std::string& host, const std::string& port) {
 	long num;

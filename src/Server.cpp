@@ -1,7 +1,6 @@
 #include "Server.hpp"
 
 Server::Server(const ServerConfig& o) : ServerConfig(o) {
-
 }
 
 Server::~Server() {

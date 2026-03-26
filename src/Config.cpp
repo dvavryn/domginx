@@ -308,5 +308,4 @@ const std::vector<ServerConfig>&	Config::getServerConfigs() const {
 
 
 Config::~Config() {
-
 }

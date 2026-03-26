@@ -29,7 +29,6 @@ EventLoop::EventLoop(std::vector<Server*>& s) :
 	}
 }
 
-// register fd for read events
 void	EventLoop::_addRead(int sock) {
 	struct kevent event;
 	EV_SET(&event, sock, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
@@ -38,7 +37,6 @@ void	EventLoop::_addRead(int sock) {
 	}
 }
 
-// register fd for write events
 void	EventLoop::_addWrite(int sock) {
 	struct kevent event;
 	EV_SET(&event, sock, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, 0);
@@ -47,7 +45,6 @@ void	EventLoop::_addWrite(int sock) {
 	}
 }
 
-// deregister read fd
 void	EventLoop::_removeRead(int sock) {
 	struct kevent event;
 	EV_SET(&event, sock, EVFILT_READ, EV_DELETE, 0, 0, 0);
@@ -102,7 +99,6 @@ void	EventLoop::run() {
 				if (_clientMap[events[i].ident]->getState() == C_SEND_R) {
 					_addWrite(events[i].ident);
 					_removeRead(events[i].ident);
-					std::cout << "stuck here"<< std::endl;	// TODO: fix this bullshit
 				}
 				else if (_clientMap[events[i].ident]->getState() == C_ERROR) {
 					_removeRead(events[i].ident);
