@@ -15,12 +15,13 @@ enum state {
 
 class Client {
 private:
+	time_t								_lastActivity;
 	state								_state;
 	int									_fd;
 	const ServerConfig*					_serverConfig;
 	std::string							_method;
-	std::string							_httpVersion;
 	std::string							_uri;
+	std::string							_httpVersion;
 	std::map<std::string, std::string>	_headers;
 	std::string							_body;
 
@@ -28,7 +29,6 @@ private:
 	std::string							_writeBuffer;
 	size_t								_bytesSent;
 
-	time_t								_lastActivity;
 
 
 	void	_readHeaders();

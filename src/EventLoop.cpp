@@ -71,6 +71,7 @@ void	EventLoop::run() {
 		}
 		for (int i = 0; i < num; i++) {
 			if (events[i].flags & EV_ERROR || events[i].flags & EV_EOF) {
+				//std::cerr << "EV_ERROR || EV_EOF" << std::endl;
 				_removeRead(events[i].ident);
 				_removeWrite(events[i].ident);
 				close(events[i].ident);
@@ -80,6 +81,7 @@ void	EventLoop::run() {
 				}
 			}
 			else if (_serverMap.find(events[i].ident) != _serverMap.end() && events[i].filter & EVFILT_READ) {
+				//std::cerr << "socket" << std::endl;
 				int toAdd;
 				if ((toAdd = accept(events[i].ident, NULL, NULL)) == -1) {
 					continue;
@@ -92,6 +94,7 @@ void	EventLoop::run() {
 				_clientMap[toAdd] = new Client(toAdd, _serverMap[events[i].ident]);
 			}
 			else if (events[i].filter == EVFILT_READ) {
+				//std::cerr << "EVFILT_READ" << std::endl;
 				if (_clientMap.find(events[i].ident) == _clientMap.end()) {
 					continue;
 				}
@@ -108,6 +111,7 @@ void	EventLoop::run() {
 				}
 			}
 			else if (events[i].filter == EVFILT_WRITE) {
+				//std::cerr << "EVFILT_WRITE" << std::endl;
 				if (_clientMap.find(events[i].ident) == _clientMap.end()) {
 					continue;
 				}

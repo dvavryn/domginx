@@ -1,11 +1,11 @@
 #include "Client.hpp"
 
 Client::Client(int fd, const ServerConfig* s) :
+	_lastActivity(time(NULL)),
 	_state(C_READ_H),
 	_fd(fd),
 	_serverConfig(s),
-	_bytesSent(0),
-	_lastActivity(time(NULL))
+	_bytesSent(0)
 {
 }
 
@@ -37,13 +37,51 @@ void	Client::write() {
 	}
 }
 
+// test response
+/*void	Client::_createResponse() {
+	std::stringstream ss;
+	std::map<std::string, std::string>::iterator it;
+
+	ss	<< "<p>"
+		<< "Last Activity: "	<< ctime(&_lastActivity)	<< "</br>"
+		<< "FD:            "	<< _fd						<< "</br>"
+		<< "ServerConfig:  "	<< _serverConfig			<< "</br>"
+		<< "Method:        "	<< _method					<< "</br>"
+		<< "URI:           "	<< _uri						<< "</br>"
+		<< "Http-version:  "	<< _httpVersion				<< "</br>"
+		<< "Headers:" 										<< "</br>";
+	size_t	max = 0;
+	for (it = _headers.begin(); it != _headers.end(); ++it) {
+		size_t	tmp = it->first.size();
+		max = (tmp > max) ? tmp : max;
+	}
+	for (it = _headers.begin(); it != _headers.end(); ++it) {
+		ss << "[" << it->first << "]</br>";
+		ss << "[" << it->second << "]</br></br>";
+	}
+	ss << _body << "</p>";
+	std::string	body = ss.str();
+	std::stringstream out;
+	out << "HTTP/1.1 200 OK\r\n"
+		<< "Content-Type: text/html; charset=UTF-8\r\n"
+		<< "Content-Length: " << body.size() << "\r\n"
+		<< "Connection: close\r\n"
+		<< "\r\n"
+		<< body;
+	_writeBuffer = out.str();
+	_state = C_SEND_R;
+} */
+
+
+// for siege!!
+// _writeBuffer += "HTTP/1.1 200 OK\r\n";
+// _writeBuffer += "Content-Type: text/plain\r\n";
+// _writeBuffer += "Content-Length: 13\r\n";
+// _writeBuffer += "Connection: close\r\n";
+// _writeBuffer += "\r\n";
+// _writeBuffer += "Hello, World!";
 void	Client::_createResponse() {
-	_writeBuffer += "HTTP/1.1 200 OK\r\n";
-	_writeBuffer += "Content-Type: text/html; charset=UTF-8\r\n";
-	_writeBuffer += "Content-Length: 52\r\n";
-	_writeBuffer += "Connection: close\r\n";
-	_writeBuffer += "\r\n";
-	_writeBuffer += "<html><body><h1>It Works for now</h1></body></html>";
+	// how should i do this?
 	_state = C_SEND_R;
 }
 
@@ -96,7 +134,7 @@ void	Client::_splitHeader(size_t start, size_t end) {
 	for (i = bound + 1; i < end && std::isspace(_readBuffer[i]); i++);
 
 	key = _readBuffer.substr(start, bound - start);
-	val = _readBuffer.substr(i, end - i - 1);
+	val = _readBuffer.substr(i, end - i);
 	_headers[key] = val;
 }
 
